@@ -1,10 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, SafeAreaView } from 'react-native';
 import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React from 'react';
 
+//create the email login field
 const LoginEmailField = () => {
-  const [text, onChangeText] = React.useState("email");
+  const [text, onSubmitEditing] = React.useState("email");
+
+  return(
+    <SafeAreaView>
+      <TextInput 
+        style={styles.input}
+        onSubmitEditing={() => "Hello!"}
+        placeholder={text}
+      />
+    </SafeAreaView>
+  );
+};
+
+//create the password login field
+const LoginPasswordField = () => {
+  const [text, onChangeText] = React.useState("password");
   const [number, onChangeNumber] = React.useState(null);
 
   return(
@@ -12,7 +29,7 @@ const LoginEmailField = () => {
       <TextInput 
         style={styles.input}
         onChangeText={onChangeText}
-        value={text}
+        placeholder={text}
       />
     </SafeAreaView>
   );
@@ -43,14 +60,15 @@ const firebaseConfig = {
   messagingSenderId: "186764906243",
   appId: "1:186764906243:web:380c4fe01968b331c4a336"
 };
- 
 const app = initializeApp(firebaseConfig);
 
+//render app
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Firebase Demo!</Text>
       <LoginEmailField></LoginEmailField>
+      <LoginPasswordField></LoginPasswordField>
       <StatusBar style="auto" />
     </View>
   );
