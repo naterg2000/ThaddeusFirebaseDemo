@@ -1,49 +1,73 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import auth from '@react-native-firebase/auth';
 
 const LoginScreen = () => {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
   return (
     <KeyboardAvoidingView
         style={styles.container}
-        behavior="padding"
+        behavior="height"
     >
 
-        {/* email input field */}
+        {/* input area */}
         <View style={styles.inputContainer}>
 
             {/* email input field */}
             <TextInput
                 placeholder='email'
-                //value={ }
-                //onChangeText={text => }
+                value={ email }
+                onChangeText={text => setEmail(text)}
                 style={styles.input}
             />
 
-            {/* email input field */}
+            {/* password input field */}
             <TextInput
                 placeholder='password'
                 secureTextEntry
-                //value={ }
-                //onChangeText={text => }
+                value={ password }
+                onChangeText={text => setPassword(text)}
                 style={styles.input}
             />
 
         </View> 
 
-        {/* email input field */}
+        {/* button area */}
         <View
             style={styles.buttonContainer}
         >
             
-            {/* email input field */}
+            {/* login button */}
             <TouchableOpacity
-                onPress={() => { }}
+                onPress={
+
+                    auth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .then(() => {
+                        console.log('User account created & signed in!');
+                    })
+                    .catch(error => {
+                        if (error.code === 'auth/email-already-in-use') {
+                        console.log('That email address is already in use!');
+                        }
+
+                        if (error.code === 'auth/invalid-email') {
+                        console.log('That email address is invalid!');
+                        }
+
+                        console.error(error);
+                    })
+
+                }
                 style={styles.button}
             >
                 <Text>Login</Text>
             </TouchableOpacity>
 
-            {/* email input field */}
+            {/* register button */}
             <TouchableOpacity
                 onPress={() => { }}
                 style={[styles.button, styles.buttonOutline]}
@@ -60,18 +84,17 @@ const LoginScreen = () => {
 export default LoginScreen
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     input: {
         backgroundColor: 'white',
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 10,
         marginTop: 5,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     inputContainer: {
         width: '80%',
