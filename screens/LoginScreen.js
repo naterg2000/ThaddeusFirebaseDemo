@@ -7,78 +7,83 @@ const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-  return (
-    <KeyboardAvoidingView
-        style={styles.container}
-        behavior="height"
-    >
+    const handleSignup = () => {
+        auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log('User account created & signed in!');
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+            console.log('That email address is already in use!');
+            }
 
-        {/* input area */}
-        <View style={styles.inputContainer}>
+            if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+            }
 
-            {/* email input field */}
-            <TextInput
-                placeholder='email'
-                value={ email }
-                onChangeText={text => setEmail(text)}
-                style={styles.input}
-            />
+            console.error(error);
+        }); 
+    }
 
-            {/* password input field */}
-            <TextInput
-                placeholder='password'
-                secureTextEntry
-                value={ password }
-                onChangeText={text => setPassword(text)}
-                style={styles.input}
-            />
+    const handleSignin = () => {
+        
+        
+    }
 
-        </View> 
-
-        {/* button area */}
-        <View
-            style={styles.buttonContainer}
+    return (
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior="height"
         >
-            
-            {/* login button */}
-            <TouchableOpacity
-                onPress={
 
-                    auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(() => {
-                        console.log('User account created & signed in!');
-                    })
-                    .catch(error => {
-                        if (error.code === 'auth/email-already-in-use') {
-                        console.log('That email address is already in use!');
-                        }
+            {/* input area */}
+            <View style={styles.inputContainer}>
 
-                        if (error.code === 'auth/invalid-email') {
-                        console.log('That email address is invalid!');
-                        }
+                {/* email input field */}
+                <TextInput
+                    placeholder='email'
+                    value={ email }
+                    onChangeText={text => setEmail(text)}
+                    style={styles.input}
+                />
 
-                        console.error(error);
-                    })
+                {/* password input field */}
+                <TextInput
+                    placeholder='password'
+                    secureTextEntry
+                    value={ password }
+                    onChangeText={text => setPassword(text)}
+                    style={styles.input}
+                />
 
-                }
-                style={styles.button}
+            </View> 
+
+            {/* button area */}
+            <View
+                style={styles.buttonContainer}
             >
-                <Text>Login</Text>
-            </TouchableOpacity>
+                
+                {/* login button */}
+                <TouchableOpacity
+                    onPress={ handleSignin }
+                    style={styles.button}
+                >
+                    <Text>Login</Text>
+                </TouchableOpacity>
 
-            {/* register button */}
-            <TouchableOpacity
-                onPress={() => { }}
-                style={[styles.button, styles.buttonOutline]}
-            >
-                <Text style={styles.buttonOutlineText}>Register</Text>
-            </TouchableOpacity>
+                {/* register button */}
+                <TouchableOpacity
+                    onPress={ handleSignup }
+                    style={[styles.button, styles.buttonOutline]}
+                >
+                    <Text style={styles.buttonOutlineText}>Register</Text>
+                </TouchableOpacity>
 
-        </View>
+            </View>
 
-    </KeyboardAvoidingView>
-  )
+        </KeyboardAvoidingView>
+    )
 }
 
 export default LoginScreen
